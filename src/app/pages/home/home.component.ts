@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, viewChild, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -7,21 +7,29 @@ import { AfterViewInit, Component, ElementRef, viewChild, ViewChild } from '@ang
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements AfterViewInit{
+export class HomeComponent implements AfterViewInit {
   @ViewChild('bgVideo') bgVideo!: ElementRef<HTMLVideoElement>;
 
-  ngAfterViewInit() {
-    setTimeout(() => {
+  ngAfterViewInit(): void {
     const video = this.bgVideo.nativeElement;
-    video
-      .play()
-      .then(() => {
-        console.log('✅ Video reproduciéndose automáticamente');
-      })
-      .catch((err) => {
-        console.warn('⚠️ Autoplay bloqueado, esperando interacción');
-      });
-  }, 500); // Espera medio segundo por si el DOM aún está montando
-  }
-} 
 
+    // Asegúrate de que el video esté configurado correctamente
+    video.muted = true;
+    video.autoplay = true;
+    video.playsInline = true;
+    video.loop = true;
+
+    // Forzar reproducción
+    video.load(); // ⚠️ Esto reinicia el video y ayuda si no ha sido cargado aún
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          console.log('✅ Video reproducido');
+        })
+        .catch((err) => {
+          console.warn('⚠️ Error en autoplay:', err);
+        });
+    }
+  }
+}
