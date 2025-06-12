@@ -13,13 +13,11 @@ export class HomeComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     const video = this.bgVideo.nativeElement;
 
-    // Asegúrate de que el video esté configurado correctamente
     video.muted = true;
     video.autoplay = true;
     video.playsInline = true;
     video.loop = true;
 
-    // Forzar reproducción
     video.load(); // ⚠️ Esto reinicia el video y ayuda si no ha sido cargado aún
     const playPromise = video.play();
     if (playPromise !== undefined) {
