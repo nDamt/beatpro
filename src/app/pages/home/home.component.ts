@@ -18,7 +18,8 @@ export class HomeComponent implements AfterViewInit {
     video.playsInline = true;
     video.loop = true;
 
-    video.load(); // ⚠️ Esto reinicia el video y ayuda si no ha sido cargado aún
+    video.load(); 
+    
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise
